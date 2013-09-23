@@ -12,7 +12,7 @@
 class Aozora
 
   # テキストの種類として指定できるSymbolのリスト
-  Titles = lambda {
+  TITLES = lambda {
     titles = Array.new
     titles.push :kokoro
     titles.push :bocchan
@@ -27,8 +27,20 @@ class Aozora
     titles.push :sangetsuki
     titles.push :watashino_kojinshugi
     titles.push :london
+    titles.push :lorem_ipsum
+    titles.push :happy_prince
+    titles.push :christmas_carol
     titles.push :__TEST_DATA__ # for test only
     return titles
+  }.call
+
+  # 英文のテキストのリスト
+  EN_TITLES = lambda {
+    en_titles = Array.new
+    en_titles.push :lorem_ipsum
+    en_titles.push :happy_prince
+    en_titles.push :christmas_carol
+    return en_titles
   }.call
 
   #
@@ -42,10 +54,15 @@ class Aozora
     validate_length(length)
 
     if title.kind_of? Numeric
-      title = Titles[title]
+      title = TITLES[title]
     end
     @text = read_file(title, length)
     @toggles = {:dots => false, :paragraph => false}
+    if EN_TITLES.include? title
+      @lang = :en
+    else
+      @lang = :ja
+    end
     return self
   end
 
@@ -65,9 +82,9 @@ class Aozora
     titles += "| n| symbol                  |\n"
     titles += "+--+-------------------------+\n"
     # __TEST_DATA__.txtを含めない
-    (0..(Titles.size-2)).each do |i| 
+    (0..(TITLES.size-2)).each do |i| 
       num_s = sprintf("%2d",i)
-      sym_s = sprintf("%-25s",Titles[i].inspect)
+      sym_s = sprintf("%-25s",TITLES[i].inspect)
       titles += "|#{num_s}|#{sym_s}|\n"
     end
     titles += "+--+-------------------------+\n"
@@ -151,8 +168,13 @@ class Aozora
     div_paragraph(p_length)
 
     if options[:space_head]
-      @text = "　"+@text
-      @text.gsub!(/\n/,"\n　")
+      if @lang == :en
+        @text = "    "+@text
+        @text.gsub!(/\n/,"\n    ")
+      else
+        @text = "　"+@text
+        @text.gsub!(/\n/,"\n　")
+      end
     end
 
     if options[:blank_line]
@@ -204,10 +226,19 @@ class Aozora
     if (p_length <= 0) or (p_length >= @text.size)
       raise "invalid argmument: p_length = #{p_length}"
     end
+    if @lang == :en
+      en_div_paragraph(p_length)      
+    else
+      ja_div_paragraph(p_length)
+    end
+    return nil
+  end
 
+  def ja_div_paragraph(p_length)
     offset = 0; ptr = 0; prev = 0
+    comma = "。"
     loop do
-      ptr = @text.index("。", offset)
+      ptr = @text.index(comma, offset)
       # 一度目の探索で終端に辿り着いた場合
       return if not ptr
       # 一度目の探索でp_lengthを超えた場合
@@ -219,7 +250,7 @@ class Aozora
       
       loop do
         prev = ptr
-        ptr = @text.index("。", (prev+1))
+        ptr = @text.index(comma, (prev+1))
         return if not ptr
 
         # offsetからの距離
@@ -242,20 +273,59 @@ class Aozora
     end
   end
 
+  def en_div_paragraph(p_length)
+    offset = 0; ptr = 0; prev = 0
+    comma = "."
+    loop do
+      ptr = @text.index(comma, offset)
+      # 一度目の探索で終端に辿り着いた場合
+      return if not ptr
+      # 一度目の探索でp_lengthを超えた場合
+      if p_length <= (ptr - offset)
+        @text = @text[0..ptr] + "\n" + @text[(ptr+1)..(-1)].strip
+        offset = ptr+2
+        next
+      end
+      
+      loop do
+        prev = ptr
+        ptr = @text.index(comma, (prev+1))
+        return if not ptr
+
+        # offsetからの距離
+        ptr_rel  = ptr - offset
+        prev_rel = prev - offset
+
+        if ptr_rel >= p_length
+          if (p_length - prev_rel) < (ptr_rel - p_length)
+            # prevの直後に改行を入れてoffsetを更新
+            @text = @text[0..prev] + "\n" + @text[(prev+1)..(-1)].strip
+            offset = prev+2
+          else
+            # ptrの直後に改行を入れてoffsetを更新
+            @text = @text[0..ptr] + "\n" + @text[(ptr+1)..(-1)].strip
+            offset = ptr+2
+          end
+          break
+        end
+      end
+    end
+  end
+
   def validate_tilte(title) 
     if title == nil
       raise "invalid argmument: title = nil"
     end
 
     if title.kind_of? Numeric
-      if (title > (Titles.size - 1)) or (title < 0)
+      if (title > (TITLES.size - 1)) or (title < 0)
         raise "invalid argmument: title = #{title}"
       end
       return nil
     end
     
     if title.kind_of? Symbol
-      Titles.each do |t|
+      TITLES.each do |t|
         return nil if t == title
       end
       raise "invalid argmument: title = #{title}"      

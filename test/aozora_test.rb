@@ -203,4 +203,28 @@ class AozoraTest < Test::Unit::TestCase
     actual = Aozora.new.paragraph.paragraph(1).to_s
     assert_equal(expected, actual)
   end
+
+  # fixes #2
+  def test_english_text_no_13
+    tmp = Aozora.new(13, 300)
+    actual = tmp.paragraph(100, {:space_head=>true, :blank_line=>true}).to_s
+    expected = "    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n    Duis aute irure dolor in reprehenderit in voluptate velit esse cill"
+    assert_equal(expected, actual)
+  end
+
+  # fixes #2
+  def test_english_text_no_14
+    tmp = Aozora.new(14, 300)
+    actual = tmp.paragraph(100, {:space_head=>true, :blank_line=>true}).to_s
+    expected = "    High above the city, on a tall column, stood the statue of the Happy Prince.\n\n    He was gilded all over with thin leaves of fine gold, for eyes he had two bright sapphires, and a large red ruby glowed on his sword-hilt.\n\n    He was very much admired indeed.\"He is as beautiful as a weathercock,\" remarked one of"
+    assert_equal(expected, actual)
+  end
+
+  # fixes #2
+  def test_english_text_no_15
+    tmp = Aozora.new(15, 300)
+    actual = tmp.paragraph(100, {:space_head=>true, :blank_line=>true}).to_s
+    expected = "    MARLEY was dead: to begin with. There is no doubt whatever about that.\n\n    The register of his burial was signed by the clergyman, the clerk, the undertaker, and the chief mourner.\n\n    Scrooge signed it: and Scrooge's name was good upon 'Change, for anything he chose to put his hand to.\n\n    Old Marley was as de"
+    assert_equal(expected, actual)
+  end
 end

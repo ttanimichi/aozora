@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Aozora::VERSION
   spec.authors       = ["Tsukuru Tanimichi"]
   spec.email         = ["tkr.tnmc@gmail.com"]
-  spec.description   = %q{aozoraはダミーテキストを生成するライブラリです。}
-  spec.summary       = %q{Japanese lorem ipsum generator}
+  spec.description   = %q{ダミーテキストを生成するライブラリです。}
+  spec.summary       = %q{Lipsum generator for Japanese}
   spec.homepage      = ""
   spec.license       = "MIT"
 
