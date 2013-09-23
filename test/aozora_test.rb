@@ -189,4 +189,18 @@ class AozoraTest < Test::Unit::TestCase
       "三日と経たないうちに、私を呼び寄せた友達は、"
     assert_equal(expected, actual)
   end
+
+  # fixes #1
+  def test_dots_twice_time
+    expected = Aozora.new.dots.to_s
+    actual = Aozora.new.dots.dots.to_s
+    assert_equal(expected, actual)
+  end
+
+  # fixes #1
+  def test_paragraph_twice_time
+    expected = Aozora.new.paragraph.to_s
+    actual = Aozora.new.paragraph.paragraph(1).to_s
+    assert_equal(expected, actual)
+  end
 end

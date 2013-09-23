@@ -45,6 +45,7 @@ class Aozora
       title = Titles[title]
     end
     @text = read_file(title, length)
+    @toggles = {:dots => false, :paragraph => false}
     return self
   end
 
@@ -58,7 +59,20 @@ class Aozora
   # テキストの種類として指定できるSymbolおよび番号の
   # 対応表を標準出力に表示します。
   #
-  def self.titles; print self._titles end
+  def self.titles
+    titles = String.new
+    titles += "+--+-------------------------+\n"
+    titles += "| n| symbol                  |\n"
+    titles += "+--+-------------------------+\n"
+    # __TEST_DATA__.txtを含めない
+    (0..(Titles.size-2)).each do |i| 
+      num_s = sprintf("%2d",i)
+      sym_s = sprintf("%-25s",Titles[i].inspect)
+      titles += "|#{num_s}|#{sym_s}|\n"
+    end
+    titles += "+--+-------------------------+\n"
+    print titles
+  end
 
   #
   # テキストに含まれるアルファベットを半角や全角に変換します。
@@ -130,6 +144,10 @@ class Aozora
   #           {:_head => true} を渡された場合、パラグラフの冒頭にスペースが入ります。
   #
   def paragraph(p_length=40, options={})
+    # 既にparagraphが実行済みだった場合は何もしない
+    return self if @toggles[:paragraph]
+    @toggles[:paragraph] = true
+
     div_paragraph(p_length)
 
     if options[:space_head]
@@ -148,7 +166,11 @@ class Aozora
   # ダミーテキストの末尾に、文章の途中であることを示す「…」を付します。
   #
   def dots
+    # 既にdotsが実行済みだった場合は何もしない
+    return self if @toggles[:dots]
+
     @text += "…"
+    @toggles[:dots] = true
     return self
   end
 
@@ -173,21 +195,6 @@ class Aozora
       end
       return text[0...length]
     end
-  end
-
-  def self._titles
-    titles = String.new
-    titles += "+--+-------------------------+\n"
-    titles += "| n| symbol                  |\n"
-    titles += "+--+-------------------------+\n"
-    # __TEST_DATA__.txtを含めない
-    (0..(Titles.size-2)).each do |i| 
-      num_s = sprintf("%2d",i)
-      sym_s = sprintf("%-25s",Titles[i].inspect)
-      titles += "|#{num_s}|#{sym_s}|\n"
-    end
-    titles += "+--+-------------------------+\n"
-    return titles
   end
 
   def div_paragraph(p_length)
