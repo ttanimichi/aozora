@@ -35,9 +35,12 @@ Aozora.newに第一引数、第二引数を渡すと、生成されるテキス�
 | 『女生徒』太宰治          | :joseito                 | 7 | 
 | 『人間失格』太宰治        | :ningen\_shikkaku         | 8 | 
 | 『檸檬』梶井基次郎        | :lemon                   | 9 | 
-| 『山月記』中島敦          | :sangetsuki               | 10 | 
-| 『私の個人主義』夏目漱石   | :watashino\_kojinshugi   | 11 | 
-| 『倫敦塔』夏目漱石        | :london                   | 12 | 
+| 『山月記』中島敦          | :sangetsuki              | 10 | 
+| 『私の個人主義』夏目漱石   | :watashino\_kojinshugi  | 11 | 
+| 『倫敦塔』夏目漱石        | :london                  | 12 | 
+| Lorem ipsum               | :lorem_ipsum             | 13 | 
+| The Happy Prince          | :happy_prince            | 14 | 
+| A Christmas Carol         | :christmas_carol         | 15 | 
 
 シンボルの代りにidで指定することもできます。
 
@@ -63,6 +66,9 @@ Aozora.newに第一引数、第二引数を渡すと、生成されるテキス�
     |10|:sangetsuki              |
     |11|:watashino_kojinshugi    |
     |12|:london                  |
+    |13|:lorem_ipsum             |
+    |14|:happy_prince            |
+    |15|:christmas_carol         |
     +--+-------------------------+
 
 Aozoraクラスには`to_s`が実装されており、呼び出されるとダミーテキストを返すようになっています。`Aozora#text`を使っても良いです。これは単なる別名です。
