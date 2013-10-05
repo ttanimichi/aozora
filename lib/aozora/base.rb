@@ -206,7 +206,10 @@ class Aozora
   def read_file(title, length)
     dir = File.expand_path(File.dirname(__FILE__))
     filename = dir+"/../../data/#{title}.txt"
-    File.open(filename) do |full_sign|
+
+#    Ruby1.9(Linux)版への回避策。UTF-8を指定する
+#    File.open(filename) do |full_sign|
+    File.open(filename, "r:utf-8") do |full_sign|
       text = String.new
       loop do
         while (line = full_sign.gets) == nil
