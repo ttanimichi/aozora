@@ -1,7 +1,5 @@
 # Aozora
 
----
-
 [追記] このgemを組み込んだWebアプリを公開しました。  
 http://dummyobject.info/
 
