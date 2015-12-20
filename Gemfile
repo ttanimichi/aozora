@@ -1,4 +1,14 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in aozora.gemspec
+group :development, :test do
+  gem 'awesome_print'
+  gem 'pry'
+  gem 'pry-doc'
+  gem 'pry-byebug'
+end
+
+group :test do
+  gem 'test-unit', '~> 3.0.0'
+end
+
 gemspec
