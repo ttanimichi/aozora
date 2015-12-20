@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'aozora'
-  spec.version       = '0.1.1'
+  spec.version       = '0.2.0'
   spec.authors       = ['Tsukuru Tanimichi']
   spec.email         = ['ttanimichi@hotmail.com']
   spec.summary       = 'Lipsum generator for Japanese'
