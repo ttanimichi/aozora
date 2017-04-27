@@ -6,6 +6,10 @@ module Aozora
       @titles ||= Dir["#{data_path}/*"].map {|path| File.basename(path) }
     end
 
+    def random(*args)
+      send titles.sample, *args
+    end
+    
     private
 
     def generate(title, size)
